@@ -36,6 +36,7 @@ StTopicFromFileFolderBuilder class >> onDirectory: fileReference [
 
 { #category : #accessing }
 StTopicFromFileFolderBuilder class >> resetCache [
+	<script>
 	cache := nil
 ]
 
