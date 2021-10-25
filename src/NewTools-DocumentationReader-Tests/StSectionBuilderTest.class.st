@@ -5,7 +5,7 @@ Class {
 	#name : #StSectionBuilderTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'normalizer'
+		'sectionBuilder'
 	],
 	#category : #'NewTools-DocumentationReader-Tests'
 }
@@ -15,7 +15,7 @@ StSectionBuilderTest >> setUp [
 	super setUp.
 	
 	"Put here a common initialization logic for tests"
-	normalizer := StSectionBuilder 
+	sectionBuilder := StSectionBuilder 
 ]
 
 { #category : #tests }
@@ -26,7 +26,7 @@ StSectionBuilderTest >> testAgnosticRichText [
 paragraph 2'.
 	root := Microdown new parse: src .
 	text1 := MicRichTextComposer new visit: root.
-	root := normalizer normalize: root.
+	root := sectionBuilder from: root.
 	text2 := MicRichTextComposer new visit: root.
 	self assert: text1 equals: text2
 ]
@@ -43,7 +43,7 @@ paragraph 2
 ### Header 2.0.1'.
 	root1 := Microdown new parse: src .
 	text1 := MicRichTextComposer new visit: root1.
-	root2 := normalizer normalize: root1.
+	root2 := sectionBuilder from: root1.
 	text2 := MicRichTextComposer new visit: root2.
 	self assert: text1 equals: text2
 ]
@@ -52,7 +52,7 @@ paragraph 2
 StSectionBuilderTest >> testEmptyRoot [
 	| root |
 	root := MicRootBlock new.
-	root := normalizer normalize: root.
+	root := sectionBuilder from: root.
 	self assert: root children isEmpty 
 ]
 
@@ -62,7 +62,7 @@ StSectionBuilderTest >> testHeaderLevel1 [
 	src :='#Header1'.
 	root := Microdown new parse: src .
 	self assert: root children size equals: 1.
-	root := normalizer normalize: root.
+	root := sectionBuilder from: root.
 	self assert: root children size equals: 1 
 ]
 
@@ -75,7 +75,7 @@ paragraph 1
 paragraph 2'.
 	root := Microdown new parse: src .
 	self assert: root children size equals: 3.
-	root := normalizer normalize: root.
+	root := sectionBuilder from: root.
 	self assert: root children size equals: 1.
 	self assert: root children first header header equals: 'Header1'
 ]
@@ -92,7 +92,7 @@ paragraph 2
 ### Header 2.0.1'.
 	root := Microdown new parse: src .
 	self assert: root children size equals: 7.
-	root := normalizer normalize: root.
+	root := sectionBuilder from: root.
 	self assert: root children size equals: 2
 ]
 
@@ -109,7 +109,7 @@ paragraph 3
 ### Header 2.0.1
 paragraph 4'.
 	root := Microdown new parse: src .
-	root := normalizer normalize: root.
+	root := sectionBuilder from: root.
 	self assert: root children size equals: 2.
 	self assert: root children second children size equals: 1
 ]
@@ -122,6 +122,6 @@ StSectionBuilderTest >> testNoHeaders [
 paragraph 2'.
 	root := Microdown new parse: src .
 	self assert: root children size equals: 2.
-	root := normalizer normalize: root.
+	root := sectionBuilder from: root.
 	self assert: root children size equals: 2 
 ]
