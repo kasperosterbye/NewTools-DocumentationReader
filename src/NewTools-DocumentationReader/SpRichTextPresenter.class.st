@@ -54,8 +54,7 @@ SpRichTextPresenter >> initializePresenters [
 	wrappedTextMorph := self newMorph
 		morph: morphTextModel newScrolledText;
 		yourself.
-	self editor readOnly: rendering.
-	self render
+	self setRenderMode
 ]
 
 { #category : #hooks }
