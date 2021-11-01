@@ -47,6 +47,17 @@ SpRichTextPresenter >> editor [
 	^ wrappedTextMorph morph
 ]
 
+{ #category : #rendering }
+SpRichTextPresenter >> forceRenderMode [
+	"Ignores unaccepted edits"
+	| document |
+	document := self parserClass parse: richTextString .
+	self editor
+			setText: (self morphWriter visit: document);	
+			color: self renderColor.
+	self editor textArea readOnly: true.
+]
+
 { #category : #initialization }
 SpRichTextPresenter >> initializePresenters [
 	morphTextModel := RubScrolledTextModel new.
@@ -82,7 +93,14 @@ SpRichTextPresenter >> setEditMode [
 	self editor 
 		setText: richTextString;
 		color: self editColor.
-	self editor textArea readOnly: rendering.
+	self editor textArea readOnly: false.
+]
+
+{ #category : #initialization }
+SpRichTextPresenter >> setMicrodown: aString [
+	"Reset me to show aString - assumes presenter up and running"
+	richTextString := aString.
+	self setRenderMode.
 ]
 
 { #category : #initialization }
@@ -95,14 +113,9 @@ SpRichTextPresenter >> setModelBeforeInitialization: aRTString [
 { #category : #rendering }
 SpRichTextPresenter >> setRenderMode [
 
-	| document |
 	(self editor hasUnacceptedEdits and: [ self confirmDiscardChanges])
 		ifFalse: [ richTextString := morphTextModel text asString. ].
-	document := self parserClass parse: richTextString .
-	self editor
-			setText: (self morphWriter visit: document);	
-			color: self renderColor.
-	self editor textArea readOnly: rendering.
+	self forceRenderMode.
 ]
 
 { #category : #accessing }

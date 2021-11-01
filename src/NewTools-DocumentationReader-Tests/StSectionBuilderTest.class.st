@@ -19,6 +19,25 @@ StSectionBuilderTest >> setUp [
 ]
 
 { #category : #tests }
+StSectionBuilderTest >> testAccessSubSections [
+	| root src |
+	src :='#Header1
+paragraph 1
+## Header 1.1
+paragraph 2
+
+paragraph 3
+### Header 1.1.1
+#Header 2
+### Header 2.0.1'.
+	root := Microdown new parse: src .
+	root := sectionBuilder from: root.
+	self assert: root subSections size equals: 2.
+	self assert: root subSections first subSections size equals: 1.
+	self assert: root subSections first subSections first subSections size equals: 1
+]
+
+{ #category : #tests }
 StSectionBuilderTest >> testAgnosticRichText [
 	| root src text1 text2 |
 	src :='paragraph 1

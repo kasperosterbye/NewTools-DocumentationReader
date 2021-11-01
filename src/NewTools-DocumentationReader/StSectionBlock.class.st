@@ -57,6 +57,12 @@ StSectionBlock >> level: anObject [
 StSectionBlock >> printOn: aStream [
 	level = 0
 		ifTrue: [ aStream << 'ROOT NODE' ]
-		ifFalse: [ aStream << ('#' repeat: level) << ' ' << header header ]
+		ifFalse: [ aStream << header header ]
 	
+]
+
+{ #category : #'as yet unclassified' }
+StSectionBlock >> subSections [
+	"return those children that are sub sections"
+	^ self children select: [ :block |block class = self class ]
 ]
